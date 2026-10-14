@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Address Book</title>
+</head>
+
+<body>
+    <form action="/addressbooks" method="get">
+        <button type="submit">Back</button>
+    </form>
+    <h1>Address Book <span th:text="${addressBook.id}">ID</span></h1>
+    <ul>
+        <li th:each="buddy : ${buddies}">
+            <strong th:text="|${buddy.name}:|">Buddy name</strong>
+            <span th:text="|${buddy.address},|">Buddy address</span>
+            <span th:text="${buddy.phoneNumber}">Buddy phone number</span>
+        </li>
+    </ul>
+</body>
+
+</html>

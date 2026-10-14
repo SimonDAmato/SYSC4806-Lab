@@ -1,0 +1,34 @@
+Copy and run these commands in Git Bash. Make sure the application is running first.
+
+1. Add a buddy to address book 1:
+
+curl --request POST "http://localhost:8080/api/addressbooks/1/buddies" \
+  --header "Accept: application/json" \
+  --header "Content-Type: application/json" \
+  --data-raw '{"name":"Alex Stewart","address":"123 Example Street","phoneNumber":"613-555-0100"}'
+
+2. Create a new address book:
+
+curl --request POST "http://localhost:8080/addressBooks" \
+  --header "Accept: application/hal+json" \
+  --header "Content-Type: application/json" \
+  --data-raw '{}'
+
+The response contains a self link ending with the new address-book ID, such as http://localhost:8080/addressBooks/2.
+Set NEW_BOOK_ID below to that ID:
+
+NEW_BOOK_ID=2
+
+3. Add the first buddy to the new address book:
+
+curl --request POST "http://localhost:8080/api/addressbooks/${NEW_BOOK_ID}/buddies" \
+  --header "Accept: application/json" \
+  --header "Content-Type: application/json" \
+  --data-raw '{"name":"Taylor Stewart","address":"456 Sample Avenue","phoneNumber":"613-555-0101"}'
+
+4. Add the second buddy to the same address book:
+
+curl --request POST "http://localhost:8080/api/addressbooks/${NEW_BOOK_ID}/buddies" \
+  --header "Accept: application/json" \
+  --header "Content-Type: application/json" \
+  --data-raw '{"name":"Jordan Stewart","address":"789 Demo Road","phoneNumber":"613-555-0102"}'
