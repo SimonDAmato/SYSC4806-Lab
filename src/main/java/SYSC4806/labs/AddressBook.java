@@ -135,30 +135,4 @@ public class AddressBook {
             System.out.println(buddy.getName() + ": " + buddy.getAddress() + ", " + buddy.getPhoneNumber());
         }
     }
-
-    /**
-     * Main method to demonstrate and test basic functionality of the
-     * {@code AddressBook}.
-     *
-     * @param args command-line arguments (not used)
-     */
-    public static void main(String[] args) {
-        System.out.println("Address Book");
-        AddressBook addressBook = new AddressBook();
-
-        // Add first buddy
-        addressBook.addBuddy("Tom", "100 Generic Street", "000-000-0000");
-        System.out.println("\nAfter adding Tom:");
-        addressBook.showBuddies();
-
-        // Add second buddy
-        addressBook.addBuddy("Tommy", "100 Generic Street", "000-000-0000");
-        System.out.println("\nAfter adding Tommy:");
-        addressBook.showBuddies();
-
-        // Remove first buddy
-        addressBook.removeBuddy("Tom");
-        System.out.println("\nAfter removing Tom:");
-        addressBook.showBuddies();
-    }
 }

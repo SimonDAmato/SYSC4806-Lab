@@ -7,17 +7,42 @@
 </head>
 
 <body>
-    <form action="/addressbooks" method="get">
-        <button type="submit">Back</button>
-    </form>
-    <h1>Address Book <span th:text="${addressBook.id}">ID</span></h1>
-    <ul>
-        <li th:each="buddy : ${buddies}">
-            <strong th:text="|${buddy.name}:|">Buddy name</strong>
-            <span th:text="|${buddy.address},|">Buddy address</span>
-            <span th:text="${buddy.phoneNumber}">Buddy phone number</span>
-        </li>
-    </ul>
+<form action="/addressbooks" method="get">
+    <button type="submit">Back</button>
+</form>
+<h1>Address Book <span th:text="${addressBook.id}">ID</span></h1>
+<ul>
+    <li th:each="buddy : ${buddies}">
+        <strong th:text="|${buddy.name}:|">Buddy name</strong>
+        <span th:text="|${buddy.address},|">Buddy address</span>
+        <span th:text="${buddy.phoneNumber}">Buddy phone number</span>
+        <form method="post"
+              th:action="@{/addressbooks/{id}/buddies/{name}/delete(id=${addressBook.id},name=${buddy.name})}">
+            <button type="submit">Remove</button>
+        </form>
+    </li>
+</ul>
+
+<form method="POST" th:action="@{/addressbooks/{id}/buddies/create(id=${addressBook.id})}">
+
+    <div>
+        <label>Name:</label>
+        <input name="name" required type="text">
+    </div>
+
+    <div>
+        <label>Phone Number:</label>
+        <input name="phoneNumber" type="text">
+    </div>
+
+    <div>
+        <label>Address:</label>
+        <input name="address" type="text">
+    </div>
+
+    <button type="submit">Create Buddy</button>
+</form>
+
 </body>
 
 </html>
