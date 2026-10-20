@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<form action="/addressbooks" method="get">
+<form action="/" method="get">
     <button type="submit">Back</button>
 </form>
 <h1>Address Book <span th:text="${addressBook.id}">ID</span></h1>
@@ -16,14 +16,13 @@
         <strong th:text="|${buddy.name}:|">Buddy name</strong>
         <span th:text="|${buddy.address},|">Buddy address</span>
         <span th:text="${buddy.phoneNumber}">Buddy phone number</span>
-        <form method="post"
-              th:action="@{/addressbooks/{id}/buddies/{name}/delete(id=${addressBook.id},name=${buddy.name})}">
+        <form method="post" th:action="@{/{id}/buddies/{name}/delete(id=${addressBook.id},name=${buddy.name})}">
             <button type="submit">Remove</button>
         </form>
     </li>
 </ul>
 
-<form method="POST" th:action="@{/addressbooks/{id}/buddies/create(id=${addressBook.id})}">
+<form method="POST" th:action="@{/{id}/buddies/create(id=${addressBook.id})}">
 
     <div>
         <label>Name:</label>

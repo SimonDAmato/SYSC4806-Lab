@@ -7,13 +7,22 @@
 </head>
 
 <body>
-    <h1>Address Books</h1>
-    <ul>
-        <li th:each="book : ${addressBooks}">
-            <a th:href="@{/addressbooks/{id}/view(id=${book.id})}"
-               th:text="${book.id}">Address book ID</a>
-        </li>
-    </ul>
+<h1>Address Books</h1>
+<ul>
+    <li th:each="book : ${addressBooks}">
+        <form method="get" th:action="@{/{id}/view(id=${book.id})}">
+            <button type="submit" th:text="|Address Book ${book.id}|">Address Book #</button>
+        </form>
+        <form method="post" th:action="@{/{id}/delete(id=${book.id})}">
+            <button type="submit">Remove</button>
+        </form>
+    </li>
+</ul>
+
+<form method="post" th:action="@{/create}">
+    <button type="submit">Create Address Book</button>
+</form>
+
 </body>
 
 </html>

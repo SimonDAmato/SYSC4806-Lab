@@ -5,15 +5,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.client.RestTestClient;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @AutoConfigureRestTestClient
-class AddressBookHttpTest {
+class AddressBookRestControllerTest {
 
     @Autowired
     private AddressBookRepository addressBookRepository;
@@ -33,13 +33,12 @@ class AddressBookHttpTest {
                 "123 Example Street",
                 "613-555-0100"));
         addressBook = addressBookRepository.save(addressBook);
-
     }
 
     @Test
     void ableToGetAddressBook() {
         restTestClient.get()
-                .uri("/addressBooks/{id}", addressBook.getId())
+                .uri("/{id}", addressBook.getId())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -47,18 +46,9 @@ class AddressBookHttpTest {
     }
 
     @Test
-    void homePageRedirectsToAddressBooks() {
-        restTestClient.get()
-                .uri("/")
-                .exchange()
-                .expectStatus().is3xxRedirection()
-                .expectHeader().location("/addressbooks");
-    }
-
-    @Test
     void ableToCreateAddressBook() {
         restTestClient.post()
-                .uri("/addressBooks")
+                .uri("/newAddressBook")
                 .accept(MediaType.parseMediaType("application/hal+json"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("{}")
@@ -73,7 +63,7 @@ class AddressBookHttpTest {
     @Test
     void ableToAddBuddyToAddressBook() {
         restTestClient.post()
-                .uri("/api/addressbooks/{id}/buddies", addressBook.getId())
+                .uri("/api/{id}/buddies", addressBook.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("""
                         {
@@ -95,34 +85,5 @@ class AddressBookHttpTest {
         assertNotNull(savedBuddy);
         assertEquals("456 Sample Avenue", savedBuddy.getAddress());
         assertEquals("613-555-0101", savedBuddy.getPhoneNumber());
-    }
-
-    @Test
-    void ableToAddBuddyFromAddressBookView() {
-        restTestClient.post()
-                .uri("/addressbooks/{id}/buddies/create?name={name}&address={address}&phoneNumber={phoneNumber}",
-                        addressBook.getId(), "Taylor Stewart", "456 Sample Avenue", "613-555-0101")
-                .exchange()
-                .expectStatus().isEqualTo(HttpStatus.FOUND)
-                .expectHeader().location("/addressbooks/%d/view".formatted(addressBook.getId()));
-
-        BuddyInfo savedBuddy = addressBookRepository.findById(addressBook.getId())
-                .orElseThrow()
-                .getBuddy("Taylor Stewart");
-        assertNotNull(savedBuddy);
-        assertEquals("456 Sample Avenue", savedBuddy.getAddress());
-        assertEquals("613-555-0101", savedBuddy.getPhoneNumber());
-    }
-
-    @Test
-    void ableToRemoveBuddyFromAddressBookView() {
-        restTestClient.post()
-                .uri("/addressbooks/{id}/buddies/{name}/delete", addressBook.getId(), "Alex Stewart")
-                .exchange()
-                .expectStatus().isEqualTo(HttpStatus.FOUND);
-
-        AddressBook savedAddressBook = addressBookRepository.findById(addressBook.getId())
-                .orElseThrow();
-        assertNull(savedAddressBook.getBuddy("Alex Stewart"));
     }
 }
