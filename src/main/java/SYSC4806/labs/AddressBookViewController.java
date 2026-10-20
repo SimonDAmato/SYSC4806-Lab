@@ -19,17 +19,12 @@ public class AddressBookViewController {
     }
 
     @GetMapping("/")
-    public String home() {
-        return "redirect:/addressbooks";
-    }
-
-    @GetMapping("/addressbooks")
     public String listAddressBooks(Model model) {
         model.addAttribute("addressBooks", addressBookRepository.findAll());
         return "addressbooks";
     }
 
-    @GetMapping("/addressbooks/{id}/view")
+    @GetMapping("/{id}/view")
     public String viewAddressBook(@PathVariable Long id, Model model) {
         AddressBook addressBook = addressBookRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -39,7 +34,7 @@ public class AddressBookViewController {
         return "addressbook";
     }
 
-    @PostMapping("/addressbooks/{id}/buddies/{name}/delete")
+    @PostMapping("/{id}/buddies/{name}/delete")
     public String removeBuddy(
             @PathVariable Long id,
             @PathVariable String name) {
@@ -51,10 +46,10 @@ public class AddressBookViewController {
 
         addressBook.removeBuddy(name);
         addressBookRepository.save(addressBook);
-        return "redirect:/addressbooks/{id}/view";
+        return "redirect:/{id}/view";
     }
 
-    @PostMapping(value = "/addressbooks/{id}/buddies/create")
+    @PostMapping(value = "/{id}/buddies/create")
     public String addBuddy(
             @PathVariable Long id,
             @ModelAttribute BuddyInfo buddy) {
@@ -68,6 +63,25 @@ public class AddressBookViewController {
 
         addressBook.addBuddy(buddy);
         addressBookRepository.save(addressBook);
-        return "redirect:/addressbooks/{id}/view";
+        return "redirect:/{id}/view";
+    }
+
+    @PostMapping(value = "/create")
+    public String addAddressBook() {
+        AddressBook addressBook = new AddressBook();
+        addressBookRepository.save(addressBook);
+        return "redirect:/";
+    }
+
+    @PostMapping(value = "/{id}/delete")
+    public String removeAddressBook(
+            @PathVariable Long id
+    ) {
+        AddressBook addressBook = addressBookRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        addressBookRepository.delete(addressBook);
+
+        return "redirect:/";
     }
 }

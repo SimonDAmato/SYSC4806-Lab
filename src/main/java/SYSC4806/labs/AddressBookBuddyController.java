@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/addressbooks")
+@RequestMapping("/api")
 public class AddressBookBuddyController {
 
     private final AddressBookRepository addressBookRepository;

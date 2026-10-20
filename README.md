@@ -10,4 +10,4 @@ Simon D'Amato, 101273839
 
 ## Link to Deployment
 
-[AddressBook App](https://damato-addressbook-bdbbcybpfjedb3as.westus-01.azurewebsites.net/addressbooks)
+[AddressBook App](https://damato-addressbook-bdbbcybpfjedb3as.westus-01.azurewebsites.net/)
